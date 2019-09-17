@@ -24,9 +24,10 @@ bool isSorted(int *data) {
 
 //Main loop for sorting
 //Check for isSorted() result and if false it calls shuffle() and passes array to it
-void sort(int *data) {
+void sort(int *data, int *iterations) {	
 	while(!isSorted(data)) {
 		shuffle(data);
+		*iterations += 1;
 	}
 }
 
@@ -34,7 +35,7 @@ void sort(int *data) {
 //Takes the array as argument
 void shuffle(int *data) {
 	int temp, random; //Random variable and temporary variable
-	for(int i = 0; i < LISTSIZE; i++) {
+	for(int i = 0; i <= LISTSIZE; i++) {
 		temp = data[i];
 		random = rand() % LISTSIZE; //Modulus to stay in list range
 		data[i] = data[random];
@@ -44,20 +45,23 @@ void shuffle(int *data) {
 
 //Main function
 int main() {
+	long long count = 0;
+	int *iterations = &count;
 	srand(time(0)); //Initialize pseudo random number generator
 	//Loop list to assign numbers to it
-	for(int i = 0; i < LISTSIZE+1; i++) {
+	for(int i = 0; i <= LISTSIZE; i++) {
 		unsigned int num = (rand() % (MAXINT) + 1); //Modulus to keep random int lower than max int
 		data[i] = num; //Assign random number to list index i
 		printf("Data %d: %d\n", i+1, data[i]); //Print starting data
 	}
 
-	sort(data); //Sort data with bogosort
+	sort(data, iterations); //Sort data with bogosort
 
 	//Print sorted data
-	for(int i = 0; i < LISTSIZE+1; i++) {
+	for(int i = 0; i <= LISTSIZE; i++) {
 		printf("Sorted %d: %d\n", i+1, data[i]);
 	}
+	printf("Sorting took %d iterations to complete.\n", *iterations);
 
 	return 0;
 }
